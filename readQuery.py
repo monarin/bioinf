@@ -18,20 +18,20 @@ def read(QueryFile):
 				#check columns
 				cols = re.split(r'\t+', line.rstrip('\n'))
 				if len(cols) != 2:
-					raise InvalidColumnCount, "Number of columns is invalid"
+					raise InvalidColumnCount("Number of columns is invalid")
 				#check transcript coordinate
 				try:
 					TR = int(cols[1])
 					if TR < 0:
-						raise InvalidTR, "Transcipt coordinate should be a positive integer"
+						raise InvalidTR("Transcipt coordinate should be a positive integer")
 				except ValueError:
-					print "Transcript coordinate is not an integer, exiting"
+					print("Transcript coordinate is not an integer, exiting")
 					exit()
 				#all good, add item to query
 				query += [(cols[0], TR)]
 			if len(query)==0:
-				raise InvalidInputFile, "The input file is blank"			
+				raise InvalidInputFile("The input file is blank")
 	except IOError:
-		print "The file does not exist, exiting"
+		print("The file does not exist, exiting")
 		exit()
 	return query

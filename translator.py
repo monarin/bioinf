@@ -16,8 +16,8 @@ def createTranslateTbl(CIGARObj, mode='TR2CHR'):
 	"""create a table of matching starting positions for
 	transcript and genomic coordinates"""
 	translateTbl = {}
-	for TRName, TRVal in CIGARObj.iteritems():
-		for CHRName, CHRVal in TRVal.iteritems():
+	for TRName, TRVal in CIGARObj.items():
+		for CHRName, CHRVal in TRVal.items():
 			startingPosition, CIGARStr = CHRVal
 			#convert to starting value of each section
 			CIGARMatch = re.findall(r'(\d+)(\w)', CIGARStr)
@@ -31,7 +31,7 @@ def createTranslateTbl(CIGARObj, mode='TR2CHR'):
 					CIGARList = [(sum(CIGARValCHR[:i])+startingPosition, sum(CIGARValTR[:i])) \
 							for i in range(len(CIGARMatch)+1)]
 			except ValueError:
-				print "Error calculating CIGAR value, exiting"
+				print("Error calculating CIGAR value, exiting")
 				exit()
 			if mode == 'TR2CHR':
 				if TRName in translateTbl:
@@ -51,24 +51,24 @@ def toCHR(translateTbl, TRName, TR):
 	Use translateTbl to convert from transcript coordinate to
 	genomic coordinate"""
 	if TR < 0:
-		raise InvalidTranscriptCoordinate, "Transcript coodinate is invalid"
+		raise InvalidTranscriptCoordinate("Transcript coodinate is invalid")
 	output = []
 	txt = ''
 	if TRName in translateTbl:
-		for CHRName, translateTR in translateTbl[TRName].iteritems():
+		for CHRName, translateTR in translateTbl[TRName].items():
 			for i in range(len(translateTR)):
 				TRCoord, CHRCoord = translateTR[i]
 				prevCHRCoord = 0 if i == 0 else translateTR[i-1][1]
 				if TRCoord > TR: break
-			CHRMap = CHRCoord-(TRCoord-TR) 
+			CHRMap = CHRCoord-(TRCoord-TR)
 			if CHRMap > CHRCoord:
-				raise InvalidTranscriptCoordinate, "Transcript coodinate does not exist"
+				raise InvalidTranscriptCoordinate("Transcript coodinate does not exist")
 			elif CHRMap < prevCHRCoord:
 				CHRMap = 'I'+str(CHRCoord)
 			output += [(TRName, TR, CHRName, CHRMap)]
 			txt += TRName+'\t'+str(TR)+'\t'+CHRName+'\t'+str(CHRMap)+'\n'
 	else:
-		raise InvalidTranscriptName, "Transcript name not found in input 1"
+		raise InvalidTranscriptName("Transcript name not found in input 1")
 	return output, txt
 
 def toTR(translateTbl, CHRName, CHR):
@@ -76,24 +76,24 @@ def toTR(translateTbl, CHRName, CHR):
 	Use translateTbl to convert from chromosome coordinate to
 	transcript coordinate"""
 	if CHR < 0:
-		raise InvalidChromosomeCoordinate, "Chromosome coodinate is invalid"
+		raise InvalidChromosomeCoordinate("Chromosome coodinate is invalid")
 	output = []
 	txt = ''
 	if CHRName in translateTbl:
-		for TRName, translateTR in translateTbl[CHRName].iteritems():
+		for TRName, translateTR in translateTbl[CHRName].items():
 			for i in range(len(translateTR)):
 				CHRCoord, TRCoord = translateTR[i]
 				prevTRCoord = 0 if i == 0 else translateTR[i-1][1]
 				if CHRCoord > CHR: break
-			TRMap = TRCoord-(CHRCoord-CHR) 
+			TRMap = TRCoord-(CHRCoord-CHR)
 			if TRMap > TRCoord:
-				raise InvalidChromosomeCoordinate, "Chromosome coodinate does not exist"
+				raise InvalidChromosomeCoordinate("Chromosome coodinate does not exist")
 			elif TRMap < prevTRCoord:
 				TRMap = 'D'+str(TRCoord)
 			output += [(CHRName, CHR, TRName, TRMap)]
 			txt += CHRName+'\t'+str(CHR)+'\t'+TRName+'\t'+str(TRMap)+'\n'
 	else:
-		raise InvalidChromosomeName, "Chromosome name not found in input 1"
+		raise InvalidChromosomeName("Chromosome name not found in input 1")
 	return output, txt
 
 if __name__ == "__main__":
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 	query = readQuery.read(args.input2)
 	translateTbl = createTranslateTbl(CIGARObj)
 	txt = ''.join([toCHR(translateTbl, TRPair[0], TRPair[1])[1] for TRPair in query])
-	print 'Transcript to genmoic coordinate translator\nOUTPUT:'
-	print txt
-	
+	print('Transcript to genmoic coordinate translator\nOUTPUT:')
+	print(txt)
+
 
