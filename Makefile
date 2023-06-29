@@ -6,3 +6,6 @@ test:
 	python readCIGARtest.py -v
 	python readQuerytest.py
 .PHONY:test
+
+format:
+	black .
