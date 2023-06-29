@@ -1,5 +1,9 @@
 """read query input"""
 
+import re
+from typing import List
+
+
 # Define exceptions
 class ReadQueryError(Exception):
     pass
@@ -17,10 +21,7 @@ class InvalidInputFile(ReadQueryError):
     pass
 
 
-import re
-
-
-def read(QueryFile):
+def read(QueryFile: str) -> List:
     """Read input file 2 and output query
     query = [('TR1', transcriptCoordinate)]"""
     query = []

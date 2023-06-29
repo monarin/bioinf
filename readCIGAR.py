@@ -1,5 +1,9 @@
 """read CIGAR input"""
 
+import re
+from typing import Dict, Tuple
+
+
 # Define exceptions
 class ReadCIGARError(Exception):
     pass
@@ -17,10 +21,7 @@ class InvalidInputFile(ReadCIGARError):
     pass
 
 
-import re
-
-
-def read(CIGARFile):
+def read(CIGARFile: str) -> Dict[str, Dict[str, Tuple[int, str]]]:
     """Read input file 1 and output CIGARObj
     CIGARObj := {'TR': {CHR: (startingPosition, CIGARString)}}'"""
     CIGARObj = {}

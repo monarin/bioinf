@@ -5,6 +5,7 @@ import readCIGAR
 import readQuery
 from typing import Dict, Tuple, List
 
+
 # Define exceptions
 class TranslatorError(Exception):
     pass
@@ -26,7 +27,7 @@ class InvalidChromosomeCoordinate(TranslatorError):
     pass
 
 
-def createTranslateTbl(CIGARObj: Dict, mode: str ="TR2CHR") -> Dict:
+def createTranslateTbl(CIGARObj: Dict, mode: str = "TR2CHR") -> Dict:
     """create a table of matching starting positions for
     transcript and genomic coordinates"""
     translateTbl = {}
@@ -69,7 +70,9 @@ def createTranslateTbl(CIGARObj: Dict, mode: str ="TR2CHR") -> Dict:
     return translateTbl
 
 
-def toCHR(translateTbl: Dict[str, Dict[str, List]], TRName: str, TR: int) -> Tuple[List, str]:
+def toCHR(
+    translateTbl: Dict[str, Dict[str, List]], TRName: str, TR: int
+) -> Tuple[List, str]:
     """Input: translate table, transcript name, and transcript coordinate
     Use translateTbl to convert from transcript coordinate to
     genomic coordinate"""
@@ -96,7 +99,9 @@ def toCHR(translateTbl: Dict[str, Dict[str, List]], TRName: str, TR: int) -> Tup
     return output, txt
 
 
-def toTR(translateTbl: Dict[str, Dict[str, List]], CHRName: str, CHR: int) -> Tuple[List, str]:
+def toTR(
+    translateTbl: Dict[str, Dict[str, List]], CHRName: str, CHR: int
+) -> Tuple[List, str]:
     """Input: translate table, chromosome name, and chromosome coordinate
     Use translateTbl to convert from chromosome coordinate to
     transcript coordinate"""
@@ -144,7 +149,6 @@ def main():
     txt = "".join([toCHR(translateTbl, TRPair[0], TRPair[1])[1] for TRPair in query])
     print("Transcript to genmoic coordinate translator\nOUTPUT:")
     print(txt)
-
 
 
 if __name__ == "__main__":
